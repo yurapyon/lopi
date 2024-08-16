@@ -1,3 +1,5 @@
+module Lopi
+
 using GLFW
 using ModernGL
 
@@ -17,4 +19,6 @@ function initgraphics()
     end
 
     GLFW.DestroyWindow(window)
+end
+
 end

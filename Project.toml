@@ -1,0 +1,8 @@
+name = "Lopi"
+uuid = "e8712b8d-eaab-46e2-8a66-f45ad3a9cbf6"
+authors = ["yurapyon <genericpb@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+GLFW = "f7f18e0c-5ee9-5ccd-a5bf-e8befd85ed98"
+ModernGL = "66fc600b-dfda-50eb-8b99-91cfa97b1301"

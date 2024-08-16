@@ -1,3 +1,5 @@
+module Geometry
+
 using LinearAlgebra
 
 struct Circle
@@ -48,4 +50,6 @@ function intersects(point::Vector, tri::Triangle)
     has_positive = na > 0 || nb > 0 || nc > 0
     has_negative = na < 0 || nb < 0 || nc < 0
     !(has_positive && has_negative)
+end
+
 end

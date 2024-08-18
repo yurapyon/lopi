@@ -1,27 +1,26 @@
 module Lopi
 
-using GLFW
 using ModernGL
 using Revise
+using GLFW
 
-include("other_file.jl")
+include("gfx/GFX.jl")
+include("ui/UI.jl")
 
-function initgraphics()
-    GLFW.WindowHint(GLFW.FLOATING, true)
-    window = GLFW.CreateWindow(640, 480, "GLFW.jl")
+function main()
+    ctx = GFX.init()
 
-    GLFW.MakeContextCurrent(window)
+    print(typeof(ctx.window))
 
-    while !GLFW.WindowShouldClose(window)
+    while !GLFW.WindowShouldClose(ctx.window)
         Revise.revise()
-        Base.invokelatest(testing)
+        Base.invokelatest(UI.draw)
 
-        GLFW.SwapBuffers(window)
+        GLFW.SwapBuffers(ctx.window)
         GLFW.PollEvents()
     end
 
-    GLFW.DestroyWindow(window)
-    GLFW.PollEvents()
+    GFX.deinit(ctx)
 end
 
 end

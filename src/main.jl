@@ -1,11 +1,13 @@
 module Lopi
 
+export main
+
 using ModernGL
 using Revise
 using GLFW
 
-include("gfx/GFX.jl")
-include("ui/UI.jl")
+include("gfx/gfx.jl")
+include("ui/ui.jl")
 
 function main()
     ctx = GFX.init()

@@ -33,7 +33,7 @@ mutable struct Node
 end
 
 function setparent!(child, parent)
-    if child.parent != nothing
+    if child.parent !== nothing
         delete!(child.parent.children, child)
     end
     child.parent = parent

@@ -8,7 +8,7 @@ struct GfxContext
     window::GLFW.Window
 end
 
-include("GL.jl")
+include("gl/gl.jl")
 
 function init()
     GLFW.WindowHint(GLFW.FLOATING, true)

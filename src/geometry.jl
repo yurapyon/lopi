@@ -25,6 +25,7 @@ function Mat4(::Translation, v::Vec3)
 end
 
 function Mat4(::Rotation, q::Quat)
+    # todo verify this works
     Mat4([
         q.x -q.y -q.z -q.w
         q.y  q.x -q.w  q.z

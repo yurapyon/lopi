@@ -2,9 +2,13 @@ module Lopi
 
 export main
 
-using ModernGL
 using Revise
+
 using GLFW
+using ModernGL
+
+include("utils.jl")
+include("geometry.jl")
 
 include("gfx/gfx.jl")
 include("ui/ui.jl")

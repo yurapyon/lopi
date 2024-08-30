@@ -7,13 +7,24 @@ const Vec2 = SVector{2, T} where {T<:Real}
 const Vec3 = SVector{3, T} where {T<:Real}
 const Quat = SVector{4, T} where {T<:Real}
 
+struct Transform
+    position::Vec3
+    rotation::Quat
+    scale::Vec3
+end
+
 const Mat4 = SMatrix{4, 4, T} where {T<:Real}
 
 abstract type Mat4Type end
 
 struct Translation <: Mat4Type end
+const Translation = Translation()
+
 struct Rotation <: Mat4Type end
+const Rotation = Rotation()
+
 struct Scaling <: Mat4Type end
+const Scaling = Scaling()
 
 function Mat4(::Translation, v::Vec3)
     Mat4([
@@ -25,7 +36,7 @@ function Mat4(::Translation, v::Vec3)
 end
 
 function Mat4(::Rotation, q::Quat)
-    # todo verify this works
+    # TODO verify this works
     Mat4([
         q.x -q.y -q.z -q.w
         q.y  q.x -q.w  q.z
@@ -43,9 +54,15 @@ function Mat4(::Scaling, v::Vec3)
     ])
 end
 
-function Mat4(translation::Vec3, rotation::Quat, scale::Vec3)
-    # TODO
+function Mat4(translation::Vec3, rotation::Quat, scaling::Vec3)
+    # TODO this can be optimized
+    T = Mat4(Translation, translation)
+    R = Mat4(Rotation, rotation)
+    S = Mat4(Scaling, scaling)
+    R * S * T
 end
+
+@inline Mat4(t::Transform) = Mat4(t.position, t.rotation, t.scale)
 
 struct Circle
     center::Vec2

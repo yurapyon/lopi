@@ -1,17 +1,16 @@
 module Scene
 
-using LinearAlgebra
-using StaticArrays
-using Geometry
-
-struct Transform
-    position::Vec3
-    rotation::Quat
-    scale::Vec3
+mutable struct Node
+    parent::Maybe{Node}
+    children::Vector{Node}
 end
 
-function Matrix(t::Transform)
-
+function setparent!(child, parent)
+    if isnothing(child.parent)
+        delete!(child.parent.children, child)
+    end
+    child.parent = Some(parent)
+    push!(parent.children, child)
 end
 
 struct Tag
@@ -19,29 +18,19 @@ struct Tag
     name::String
 end
 
-#=
 struct Scene
     tag::Tag
-    # root::
-end
-=#
-
-mutable struct Node
-    # tag::Tag
-    parent::Union{Node, Nothing}
-    children::Vector{Node}
+    root::SceneNode
+    nodes::Vector{SceneNode}
 end
 
-function setparent!(child, parent)
-    if child.parent !== nothing
-        delete!(child.parent.children, child)
-    end
-    child.parent = parent
-    push!(parent.children, child)
+struct SceneNode
+    tag::Tag
+    node::Node
+    spatial::Spatial
 end
 
 struct Spatial
-    node::Node
     is_active::Bool
     transform::Transform
 end

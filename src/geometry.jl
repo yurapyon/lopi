@@ -18,13 +18,13 @@ const Mat4 = SMatrix{4, 4, T} where {T<:Real}
 abstract type Mat4Type end
 
 struct Translation <: Mat4Type end
-const Translation = Translation()
+# const Translation = Translation()
 
 struct Rotation <: Mat4Type end
-const Rotation = Rotation()
+# const Rotation = Rotation()
 
 struct Scaling <: Mat4Type end
-const Scaling = Scaling()
+# const Scaling = Scaling()
 
 function Mat4(::Translation, v::Vec3)
     Mat4([

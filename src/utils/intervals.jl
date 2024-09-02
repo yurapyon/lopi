@@ -1,15 +1,12 @@
-struct Interval{T}
-    a::T
-    b::T
+# todo could probably use ranges for this somehow?
+struct Interval{T<:Real}
+    a::Maybe{T}
+    b::Maybe{T}
 end
 
-"
-    interval(compare_fn, array)
-returns an interval of a sorted array which would contain a value for which compare_fn(value) == 0
-"
-function Interval(compare::Function, arr)
-    index = bsearch(compare, arr)
-    found_exactly = index <= length(arr) && compare(arr[index]) == 0
+function Interval(v::Vector, x; by=identity, lt=isless)
+    index = searchsortedfirst(v, x; by=by, lt=lt)
+    found_exactly = index <= length(v) && !lt(by(x), by(v[index]))
     if found_exactly
         a = index
         b = index + 1
@@ -17,27 +14,38 @@ function Interval(compare::Function, arr)
         a = index - 1
         b = index
     end
-    Interval(a, b)
+    left = a == 0 ? nothing : Some(by(v[a]))
+    right = b > length(v) ? nothing : Some(by(v[b]))
+    Interval(left, right)
 end
 
-function Base.length(interval::Interval)
-    interval.b - interval.a
+function Base.length(i::Interval)
+    a = @something i.a return nothing
+    b = @something i.b return nothing
+    b - a
 end
 
-function Base.contains(interval, value; open_left = false, open_right = false)
-    if open_left && open_right
-        interval.a < value < interval.b
-    elseif open_left
-        interval.a < value <= interval.b
-    elseif open_right
-        interval.a <= value < interval.b
-    else
-        interval.a <= value <= interval.b
+function Base.contains(
+        i::Interval{T},
+        value;
+        open_left = false,
+        open_right = false
+    ) where T
+    a = @something i.a begin
+        open_left = false
+        typemin(T)
     end
+    b = @something i.b begin
+        open_right = false
+        typemax(T)
+    end
+    above = open_left ? a < value : a <= value
+    below = open_right ? value < b : value <= b
+    above && below
 end
 
-interpolation(interval, value) = (value - interval.a) / length(interval)
-
-function Base.Math.clamp(i::Interval, lo, hi)
-    Interval(clamp(i.a, lo, hi), clamp(i.b, lo, hi))
+function interpolation(i::Interval{T}, value) where T
+    a = @something i.a return zero(T)
+    b = @something i.b return zero(T)
+    (value - a) / length(i)
 end

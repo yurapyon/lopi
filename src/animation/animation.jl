@@ -1,26 +1,27 @@
-struct Keyframe{T}
+struct Keyframe
+    frame_at::Int
     index::Int
-    value::T
 end
 
-const Animation{T} = Vector{Keyframe{T}}
+const Animation = Vector{Keyframe}
 
-mutable struct Animator{T}
+mutable struct Animator
     frame_at::Int
     last_interval::Interval{Int}
-    animation::Animation{T}
+    animation::Animation
 
-    function Animator{T}(animation) where T
-        ret = new(0, Interval(0, 0), animation)
+    function Animator(animation)
+        ret = new(1, Interval{Int}(nothing, nothing), animation)
         updateinterval!(ret)
         ret
     end
 end
 
 function updateinterval!(animator)
+    temp = Keyframe(animator.frame_at, 0)
     animator.last_interval = Interval(
-        (keyframe) -> animator.frame_at - keyframe.index,
-        animator.animation
+        animator.animation, temp;
+        by = kf -> kf.frame_at
     )
 end
 
@@ -38,9 +39,6 @@ end
 
 advance1!(animator) = jumpto!(animator, animator.frame_at + 1)
 
-function interpolated(animator, interpolate)
-    anim = animator.animation
-    clamped = clamp(animator.last_interval, 1, length(anim))
-    i = interpolation(clamped, animator.frame_at)
-    interpolate(anim[clamped.a], anim[clamped.b], i)
+function interpolation(amtor::Animator)
+    interpolation(amtor.last_interval, amtor.frame_at)
 end

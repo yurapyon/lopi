@@ -2,6 +2,9 @@ module Lopi
 
 export main
 
+export Interval, interpolation,
+       Keyframe, Animation, Animator, jumpto!, advance1!
+
 using Revise
 using GLFW
 

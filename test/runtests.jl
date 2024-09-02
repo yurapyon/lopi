@@ -1,5 +1,5 @@
 using Test
+using Lopi
 
-@testset begin
-    @test true
-end
+include("tests/utils.jl")
+include("tests/animation.jl")

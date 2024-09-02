@@ -27,38 +27,4 @@ function bsearch(compare, arr)
     search_start
 end
 
-struct Interval
-    a::Int
-    b::Int
-    bounded_left::Bool
-    bounded_right::Bool
-end
-
-"
-returns a closed interval of the array
-"
-function Interval(compare, arr)
-    index = bsearch(compare, arr)
-    found_exactly = index <= length(arr) && compare(arr[index]) == 0
-
-    if found_exactly
-        a = index
-        bounded_left = true
-        b = index + 1
-        bounded_right = b <= length(arr)
-    else
-        if index == 1
-            a = index
-            bounded_left = false
-            b = index
-            bounded_right = true
-        else
-            a = index - 1
-            bounded_left = true
-            b = index
-            bounded_right = b <= length(arr)
-        end
-    end
-
-    Interval(a, b, bounded_left, bounded_right)
-end
+include("intervals.jl")

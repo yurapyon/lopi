@@ -8,11 +8,12 @@ using GLFW
 using FileIO
 using ImageIO
 
-include("utils.jl")
+include("utils/utils.jl")
 include("geometry.jl")
 
 include("gfx/gfx.jl")
 include("ui/ui.jl")
+include("animation/animation.jl")
 
 using .GFX
 

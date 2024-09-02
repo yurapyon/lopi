@@ -2,9 +2,9 @@ const Maybe{T} = Union{Some{T}, Nothing}
 
 """
     bsearch(compare_fn, array)
-compare should return the difference between the target value and the testValue.  
-  negative if testValue is too high.  
-  positive if testValue is too low.  
+compare_fn should return the difference between the target value and the test value.  
+  negative if test value is too high.  
+  positive if test value is too low.  
 returns the index of a value that is equal to or greater than the search value.  
 """
 function bsearch(compare, arr)
@@ -16,10 +16,9 @@ function bsearch(compare, arr)
         search_at = Int(floor((search_start + search_end) / 2))
         direction = compare(arr[search_at])
         if direction == 0
-            search_start = search_at
-            break
+            return search_at
         elseif direction < 0
-            search_end = search_at - 1
+            search_end = search_at
         else
             search_start = search_at + 1
         end
@@ -29,10 +28,10 @@ function bsearch(compare, arr)
 end
 
 struct Interval
-    a::UInt
-    a_inf::Bool
-    b::UInt
-    b_inf::Bool
+    a::Int
+    b::Int
+    bounded_left::Bool
+    bounded_right::Bool
 end
 
 "
@@ -44,22 +43,22 @@ function Interval(compare, arr)
 
     if found_exactly
         a = index
-        a_inf = false
+        bounded_left = true
         b = index + 1
-        b_inf = b > length(arr)
+        bounded_right = b <= length(arr)
     else
         if index == 1
             a = index
-            a_inf = true
+            bounded_left = false
             b = index
-            b_inf = false
+            bounded_right = true
         else
             a = index - 1
-            a_inf = false
+            bounded_left = true
             b = index
-            b_inf = b > length(arr)
+            bounded_right = b <= length(arr)
         end
     end
 
-    Some(Interval(a, b, a_inf, b_inf))
+    Interval(a, b, bounded_left, bounded_right)
 end

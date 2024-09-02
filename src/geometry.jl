@@ -13,20 +13,29 @@ struct Transform
     scale::Vec3
 end
 
+function Transform()
+    Transform(
+        Vec3(zeros()),
+        # is this right?
+        Quat([1,0,0,0]),
+        Vec3(ones()),
+    )
+end
+
 const Mat4 = SMatrix{4, 4, T} where {T<:Real}
 
 abstract type Mat4Type end
 
-struct Translation <: Mat4Type end
-# const Translation = Translation()
+struct TranslationSingleton <: Mat4Type end
+const Translation = TranslationSingleton()
 
-struct Rotation <: Mat4Type end
-# const Rotation = Rotation()
+struct RotationSingleton <: Mat4Type end
+const Rotation = RotationSingleton()
 
-struct Scaling <: Mat4Type end
-# const Scaling = Scaling()
+struct ScalingSingleton <: Mat4Type end
+const Scaling = ScalingSingleton()
 
-function Mat4(::Translation, v::Vec3)
+function Mat4(::TranslationSingleton, v::Vec3)
     Mat4([
         1 0 0 v.x
         0 1 0 v.y
@@ -35,7 +44,7 @@ function Mat4(::Translation, v::Vec3)
     ])
 end
 
-function Mat4(::Rotation, q::Quat)
+function Mat4(::RotationSingleton, q::Quat)
     # TODO verify this works
     Mat4([
         q.x -q.y -q.z -q.w
@@ -45,7 +54,7 @@ function Mat4(::Rotation, q::Quat)
     ])
 end
 
-function Mat4(::Scaling, v::Vec3)
+function Mat4(::ScalingSingleton, v::Vec3)
     Mat4([
         v.x   0   0 0
           0 v.y   0 0

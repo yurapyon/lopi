@@ -4,6 +4,7 @@ authors = ["yurapyon <genericpb@gmail.com>"]
 version = "0.1.0"
 
 [deps]
+EnumX = "4e289a0a-7415-4d19-859d-a7e5c4648b56"
 FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
 GLFW = "f7f18e0c-5ee9-5ccd-a5bf-e8befd85ed98"
 ImageIO = "82e4d734-157c-48bb-816b-45c225c6df19"

@@ -11,6 +11,8 @@ using GLFW
 using FileIO
 using ImageIO
 
+using EnumX
+
 include("utils/utils.jl")
 include("geometry.jl")
 

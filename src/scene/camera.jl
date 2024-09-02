@@ -3,6 +3,17 @@
 
 module Camera
 
+@enumx ProjectionType begin
+    Perspective
+    Orthographic
+end
+
+struct CameraData
+    type::ProjectionType
+    fov::Float32
+    projection::Mat4
+end
+
 """
     persp(top, bottom, right, left, near, far)
 generate a perspective matrix  
